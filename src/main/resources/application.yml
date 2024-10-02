@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: SOA-Backend
+  datasource:
+    url: jdbc:postgresql://localhost:5433/soa
+    username: khaled
+    password: khaled
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8088
