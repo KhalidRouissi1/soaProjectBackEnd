@@ -21,14 +21,12 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    // Create a new user
     public User createUser(UserDto userDto) {
         User user = new UserMapper().toUser(userDto);
         user.setRoles(new HashSet<>());
         return userRepository.save(user);
     }
 
-    // Assign a role to a user
     public void addRoleToUser(Integer userId, Long roleId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         Optional<Role> optionalRole = roleRepository.findById(roleId);
@@ -43,13 +41,38 @@ public class UserService {
         }
     }
 
-    // Fetch a user by ID
     public Optional<User> getUserById(Integer userId) {
         return userRepository.findById(userId);
     }
 
-    // Fetch all users
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public User updateUser(Integer userId, UserDto userDto) {
+        Optional<User> existingUserOpt = userRepository.findById(userId);
+
+        if (existingUserOpt.isPresent()) {
+            User existingUser = existingUserOpt.get();
+
+            existingUser.setUsername(userDto.username());
+            existingUser.setPassword(userDto.password());
+            existingUser.setEmail(userDto.email());
+            existingUser.setPhone(userDto.phone());
+
+            return userRepository.save(existingUser);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
+
+    public void deleteUser(Integer userId) {
+        if(userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
+
+        }
+        else {
+            throw new RuntimeException("User not found");
+        }
     }
 }

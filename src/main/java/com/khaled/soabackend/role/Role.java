@@ -28,4 +28,15 @@ public class Role {
     public Role(String name) {
         this.name = name;
     }
+
+    public void addUser(User user) {
+        this.users.add(user);
+        user.getRoles().add(this);
+    }
+
+    public void removeUser(User user) {
+        this.users.remove(user);
+        user.getRoles().remove(this);
+    }
+
 }

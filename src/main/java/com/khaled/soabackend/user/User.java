@@ -22,7 +22,7 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private Integer phone;
+    private String phone;
     @ManyToMany
     @JoinTable(
             name = "user_roles",
@@ -30,4 +30,14 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+    public void addRole(Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    public void removeRole(Role role) {
+        this.roles.remove(role);
+        role.getUsers().remove(this);
+    }
+
 }
